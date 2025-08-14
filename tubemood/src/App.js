@@ -19,12 +19,17 @@ import React, {useState} from 'react';
 
  function App () {
   const [search, setSearch] = useState("Nothing...");
+  const [linkVal, setLinkVal] = useState("");
 
-
-
+  
   function buttonClick(){
     console.log("CHECKING");
     setSearch(prevSearch => prevSearch = "Searching...");
+  }
+
+  const change = event => {
+    const newLinkVal = event.target.value;
+    setLinkVal(prevLinkVal => prevLinkVal = newLinkVal);
   }
   return (
     <div className="App">
@@ -34,10 +39,11 @@ import React, {useState} from 'react';
         </div>
 
         <div className="input-container">
-          <input id="link-input" placeholder="Paste Youtube video link here..." />
+          <input value={linkVal} onChange={change} id="link-input" placeholder="Paste Youtube video link here..." />
           <button id="link-btn" onClick={buttonClick}>Analyze</button>
         </div>
         <p>{search}</p>
+        <p>{linkVal}</p>
       </header>
     </div>
   );
