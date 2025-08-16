@@ -21,7 +21,7 @@ const HF_API_TOKEN = process.env.ACCESS_TOKEN;
 const MODEL = process.env.HUGGINGFACE_API_KEY;
 const comments = ["I love this video!", "This is terrible...", "Meh, it’s okay.", "I hate this", "Don't watch this!"];
 
-const API_URL = `https://api-inference.huggingface.co/models/${MODEL}`;
+const YT_API_KEY = process.env.YOUTUBE_API_KEY;
 
 const inference = new InferenceClient(HF_API_TOKEN);
 
@@ -44,15 +44,15 @@ app.get('/getData', (req, res) => {
 });
 
 app.post('/YTLink', (req, res) => {
-    const {link} = req.body;
+    const link = req.body.link;
     console.log(link);
+    res.send("link received!");
 });
 
 // Start server
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);
     //analyze(comments);
-    
 });
 
 
