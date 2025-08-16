@@ -1,25 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import Axios from 'axios';
 
-// export function NavBar(){
-//   return (
-//     <div className="nav">
 
-//       <p>TubeMood</p>
-//       <div className="navbar">
-//       <a>About</a>
-//       <a>API</a>
-//       <a>Contact</a>
-//       </div>
-      
-//     </div>
-//   );
-// }
+
 
  function App () {
   const [search, setSearch] = useState("Nothing...");
   const [linkVal, setLinkVal] = useState("");
+  const [data, setData] = useState("");
 
   
   function buttonClick(){
@@ -31,6 +20,16 @@ import React, {useState} from 'react';
     const newLinkVal = event.target.value;
     setLinkVal(prevLinkVal => prevLinkVal = newLinkVal);
   }
+
+  const getData = async() => {
+    const response = await Axios.get("http://localhost:5000/getData");
+    setData(response.data);
+  }
+
+  useEffect(() => {
+    getData();
+  }, [] );
+
   return (
     <div className="App">
       <header className="App-header">
@@ -44,6 +43,7 @@ import React, {useState} from 'react';
         </div>
         <p>{search}</p>
         <p>{linkVal}</p>
+        <p>{data}</p>
       </header>
     </div>
   );
