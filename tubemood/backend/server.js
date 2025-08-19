@@ -37,13 +37,16 @@ async function analyze(comment) {
       inputs: comment
     });
 
-    console.log(result);
+    //console.log(result);
+
+    return result;
 }
 
 async function fetchComments(vidLink){
   const videoId = await getVideoId(vidLink);
   console.log(videoId);
-   axios.get('https://www.googleapis.com/youtube/v3/commentThreads', {
+  try{
+    const res = await axios.get('https://www.googleapis.com/youtube/v3/commentThreads', {
     params: {
       part: 'snippet',
       videoId: videoId,
@@ -51,16 +54,21 @@ async function fetchComments(vidLink){
       key: YT_API_KEY,
       order: "relevance",
     }
-   })
-   .then(res => {
-    const comments = res.data.items.map(item => ({
+   });
+
+   const comments = res.data.items.map(item => ({
       username: item.snippet.topLevelComment.snippet.authorDisplayName,
       commentText:  item.snippet.topLevelComment.snippet.textOriginal,
-    }));
-    console.log(comments);
-    return comments;
-   })
-  .catch(err => console.error(err));
+      }));
+
+      //console.log(comments);
+      return comments;
+  } catch (error) {
+    console.error(err);
+    return null;
+  }
+
+  
 }
 
 async function getVideoId(url){
@@ -89,23 +97,76 @@ async function getVideoId(url){
   }
 }
 
+function cleanStats(rawScore){
+  const scoreMAP = {
+    L0: [],
+    L1: [],
+    L2: [],
+  };
+  rawScore.forEach(e => {
+      switch(e.label){
+        case 'LABEL_0':
+          scoreMAP.L0.push(e.score);
+          break;
+        case 'LABEL_1':
+          scoreMAP.L1.push(e.score);
+          break;
+        case 'LABEL_2':
+          scoreMAP.L2.push(e.score);
+          break;
+      }
+  });
+
+  const avg = score => score.reduce((a, b) => a + b) / score.length;
+  //counts of each label
+  console.log("\nCOUNTS OUT OF 100\n");
+  console.log("NEGATIVE: ", scoreMAP.L0.length);
+  console.log("NEUTRAL: ", scoreMAP.L1.length);
+  console.log("POSITIVE: ", scoreMAP.L2.length);
+
+  //need total average score
+  console.log("\nSCORES\n");
+  console.log("AVG NEGATIVE: ",avg(scoreMAP.L0));
+  console.log("AVG NEUTRAL: ",avg(scoreMAP.L1));
+  console.log("AVG POSITIVE: ",avg(scoreMAP.L2));
+  // console.log(scoreMAP.L0);
+}
 
 app.get('/getData', (req, res) => {
   res.send('server is connected');
 });
 
-app.post('/YTLink', (req, res) => {
+app.post('/YTLink', async (req, res) => {
     const link = req.body.link;
     console.log(link);
     //console.log(getVideoId(link));
-    fetchComments(link);
+    try{
+      const entries =  await fetchComments(link);
+      if (entries){
+        const e_arr = entries.map(e => e.commentText);
+      
+      const r_score =  await analyze(e_arr); // raw score in sentiment analysis of HF
+
+      //console.log(r_score);
+      cleanStats(r_score);
+      }else{
+        console.log("no comments found.");
+      }
+     
+    }catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, error: "Something went wrong" });
+    }
+
+    
     res.send("link received!");
+ 
 });
 
 // Start server
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);
-    //analyze(comments);
+   
 });
 
 
