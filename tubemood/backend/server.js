@@ -26,6 +26,8 @@ const YT_API_KEY = process.env.YOUTUBE_API_KEY;
 
 const inference = new InferenceClient(HF_API_TOKEN);
 
+const avg = score => score.reduce((a, b) => a + b) / score.length;
+
 
 // Analyze function using Hugging Face API
 async function analyze(comment) {
@@ -117,19 +119,36 @@ function cleanStats(rawScore){
       }
   });
 
-  const avg = score => score.reduce((a, b) => a + b) / score.length;
+  
   //counts of each label
-  console.log("\nCOUNTS OUT OF 100\n");
-  console.log("NEGATIVE: ", scoreMAP.L0.length);
-  console.log("NEUTRAL: ", scoreMAP.L1.length);
-  console.log("POSITIVE: ", scoreMAP.L2.length);
+  // console.log("\nCOUNTS OUT OF 100\n");
+  // console.log("NEGATIVE: ", scoreMAP.L0.length);
+  // console.log("NEUTRAL: ", scoreMAP.L1.length);
+  // console.log("POSITIVE: ", scoreMAP.L2.length);
 
   //need total average score
-  console.log("\nSCORES\n");
-  console.log("AVG NEGATIVE: ",avg(scoreMAP.L0));
-  console.log("AVG NEUTRAL: ",avg(scoreMAP.L1));
-  console.log("AVG POSITIVE: ",avg(scoreMAP.L2));
+  // console.log("\nSCORES\n");
+  // console.log("AVG NEGATIVE: ",avg(scoreMAP.L0));
+  // console.log("AVG NEUTRAL: ",avg(scoreMAP.L1));
+  // console.log("AVG POSITIVE: ",avg(scoreMAP.L2));
   // console.log(scoreMAP.L0);
+
+  return scoreMAP;
+}
+
+function avgScores(map){
+  const avgArr = [];
+
+
+
+  avgArr.push(avg(map.L0));
+  avgArr.push(avg(map.L1));
+  avgArr.push(avg(map.L2));
+  
+
+
+  return avgArr;
+
 }
 
 app.get('/getData', (req, res) => {
@@ -146,11 +165,19 @@ app.post('/YTLink', async (req, res) => {
         const e_arr = entries.map(e => e.commentText);
       
       const r_score =  await analyze(e_arr); // raw score in sentiment analysis of HF
-
+      const s_map = cleanStats(r_score);
+      const avgs = avgScores(s_map);
       //console.log(r_score);
-      cleanStats(r_score);
+       // console.log(avgs);
+
+       return res.json({
+        success: true,
+        avgs, 
+        s_map
+       });
       }else{
         console.log("no comments found.");
+        return res.status(404).json({ success: false, message: "No comments found." });
       }
      
     }catch (error) {
@@ -159,7 +186,7 @@ app.post('/YTLink', async (req, res) => {
     }
 
     
-    res.send("link received!");
+    // res.send("link received!");
  
 });
 

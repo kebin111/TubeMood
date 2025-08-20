@@ -9,6 +9,8 @@ import Axios from 'axios';
   const [search, setSearch] = useState("Nothing...");
   const [linkVal, setLinkVal] = useState("");
   const [data, setData] = useState("");
+  const [confidence, setConfidence] = useState([]);
+  const [counts, setCounts] = useState([]);
   // link post
   
 
@@ -22,7 +24,6 @@ import Axios from 'axios';
   const change = event => {
     const newLinkVal = event.target.value;
     setLinkVal(prevLinkVal => prevLinkVal = newLinkVal);
-    
   }
 
   const getData = async() => {
@@ -34,12 +35,29 @@ import Axios from 'axios';
     await Axios.post("http://localhost:5000/YTLink", {link : linkVal})
     .then(response => {
       console.log(response.data);
+      setConfidenceScore(response.data.avgs);
+      const arr = [];
+
+      arr.push(response.data.s_map.L0.length);
+      arr.push(response.data.s_map.L1.length);
+      arr.push(response.data.s_map.L2.length);
+      setCounts(arr);
+      console.log(counts);
     })
     .catch(error =>{
       console.error(error);
     });
     
   }
+
+  const setConfidenceScore = (data) => {
+    setConfidence(data);
+  }
+
+  const setLabelCounts = (data) => {
+    setCounts(data);
+  }
+
   useEffect(() => {
     getData();
   }, [] );
@@ -55,9 +73,20 @@ import Axios from 'axios';
           <input value={linkVal} onChange={change} id="link-input" placeholder="Paste Youtube video link here..." />
           <button id="link-btn" onClick={buttonClick}>Analyze</button>
         </div>
-        <p>{search}</p>
-        <p>{linkVal}</p>
-        <p>{data}</p>
+
+        {/* FOR DEBUGGING */}
+        {/* <p>{search}</p> */}
+        {/* <p>{linkVal}</p> */}
+        {/* <p>{data}</p> */}
+
+        <p>COUNT OUT OF 100:</p>
+        <p>NEGATIVE: {counts[0]}</p>
+        <p>NEUTRAL: {counts[1]}</p>
+        <p>POSITIVE: {counts[2]}</p>
+
+        <p>CONFIDENCE SCORE NEGATIVE: {confidence[0]}</p>
+        <p>CONFIDENCE SCORE NEUTRAL: {confidence[1]}</p>
+        <p>CONFIDENCE SCORE POSITIVE: {confidence[2]}</p>
       </header>
     </div>
   );
