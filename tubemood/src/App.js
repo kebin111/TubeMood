@@ -78,11 +78,16 @@ import Axios from 'axios';
         {/* <p>{search}</p> */}
         {/* <p>{linkVal}</p> */}
         {/* <p>{data}</p> */}
+        <div className="count-container">
 
-        <p>COUNT OUT OF 100:</p>
-        <p>NEGATIVE: {counts[0]}</p>
-        <p>NEUTRAL: {counts[1]}</p>
-        <p>POSITIVE: {counts[2]}</p>
+        <h3>COUNT OUT OF 100:</h3>
+        <div className="cc-negative">NEGATIVE: {counts[0]} comment/s</div>
+        <div className="cc-neutral">NEUTRAL: {counts[1]} comment/s</div>
+        <div className="cc-positive"> POSITIVE: {counts[2]} comment/s</div>
+
+
+        </div>
+        
 
         <p>CONFIDENCE SCORE NEGATIVE: {confidence[0]}</p>
         <p>CONFIDENCE SCORE NEUTRAL: {confidence[1]}</p>

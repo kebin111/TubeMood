@@ -90,3 +90,63 @@
   justify-content: flex-end;
   align-items: center;
 }
+
+.count-container{
+  max-width: 55rem;
+  width: 90%;
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.count-container h3{
+
+}
+
+.cc-negative{
+  padding: 0.2rem;
+  background-color: #ff0000;
+  color:#FFFFFF;
+  margin: 0.25rem;
+  border-radius: 0.25rem;
+  position: relative;
+  top: 0;
+  transition: top ease 0.5s;
+}
+.cc-neutral{
+  padding: 0.2rem;
+  background-color: #e49400;
+  color:#FFFFFF;
+  margin: 0.25rem;
+  border-radius: 0.25rem;
+  position: relative;
+  top: 0;
+  transition: top ease 0.5s;
+}
+.cc-positive{
+  padding: 0.2rem;
+  background-color: #02aa0a;
+  color:#FFFFFF;
+  margin: 0.25rem;
+  border-radius: 0.25rem;
+  position: relative;
+  top: 0;
+  transition: top ease 0.5s;
+}
+
+.cc-negative:hover{
+  top: -5px;
+}
+
+.cc-neutral:hover{
+  top: -5px;
+}
+
+.cc-positive:hover{
+  top: -5px;
+}
+
+
+
