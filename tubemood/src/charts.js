@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
+import { BarChart } from '@mui/x-charts/BarChart'
 
-export default function CountsPie({ counts }){
+export function CountsPie({ counts }){
     return(
         <PieChart
         series={[
@@ -17,4 +18,16 @@ export default function CountsPie({ counts }){
         height={200}
         />
     );
+}
+
+export function ConfidenceBar({ confidence }){
+    return (
+    <BarChart
+      height={300}
+      yAxis={[{ scaleType: 'band', data: ['Red', 'Green', 'Blue'], categoryGapRatioGapRatio: 0.3 }]}
+      series={[{ data: confidence }]}
+      layout="horizontal"
+    /> 
+    );
+
 }

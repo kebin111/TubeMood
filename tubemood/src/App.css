@@ -94,10 +94,16 @@
 .count-container{
   max-width: 55rem;
   width: 90%;
-  background-color: aliceblue;
+  background-color: rgb(255, 255, 255);
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
+}
+
+.cc-box {
+  display: flex;
+  padding: 1rem;
 }
 
 .count-container h3{
@@ -105,7 +111,7 @@
 }
 
 .cc-negative{
-  padding: 0.2rem;
+  padding: 0.5rem;
   background-color: #ff0000;
   color:#FFFFFF;
   margin: 0.25rem;
@@ -113,9 +119,10 @@
   position: relative;
   top: 0;
   transition: top ease 0.5s;
+  font-weight: bold;
 }
 .cc-neutral{
-  padding: 0.2rem;
+  padding: 0.5rem;
   background-color: #e49400;
   color:#FFFFFF;
   margin: 0.25rem;
@@ -123,9 +130,10 @@
   position: relative;
   top: 0;
   transition: top ease 0.5s;
+  font-weight: bold;
 }
 .cc-positive{
-  padding: 0.2rem;
+  padding: 0.5rem;
   background-color: #02aa0a;
   color:#FFFFFF;
   margin: 0.25rem;
@@ -133,6 +141,7 @@
   position: relative;
   top: 0;
   transition: top ease 0.5s;
+  font-weight: bold;
 }
 
 .cc-negative:hover{
@@ -153,13 +162,22 @@
   margin-top: 1rem;
   background-color: aquamarine;
   font-size: 20px;
+  display: flex;
+  max-width: 45rem;
+  width: 90%;
+  
 }
 
 .conf-box{
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
-.conf-box p{
+.conf-box h3{
   margin: 0.5rem;
+}
+.conf-box p{
+  margin: 1rem; 
+  font-size: 15px;
 }

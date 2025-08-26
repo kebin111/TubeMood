@@ -1,6 +1,6 @@
 import './App.css';
 import React, {useEffect, useState} from 'react';
-import CountsPie from './charts';
+import {CountsPie , ConfidenceBar}  from './charts.js';
 import Axios from 'axios';
 
 
@@ -81,14 +81,15 @@ import Axios from 'axios';
         {/* <p>{data}</p> */}
         <div className="count-container">
 
+        <CountsPie counts={counts} />
+
         <div className="cc-box">
-          <h3>COUNT OUT OF 100:</h3>
-          <div className="cc-negative">NEGATIVE: {counts[0]} comment/s</div>
-          <div className="cc-neutral">NEUTRAL: {counts[1]} comment/s</div>
-          <div className="cc-positive"> POSITIVE: {counts[2]} comment/s</div>
+          <div className="cc-negative">NEGATIVE: {counts[0]} </div>
+          <div className="cc-neutral">NEUTRAL: {counts[1]} </div>
+          <div className="cc-positive"> POSITIVE: {counts[2]} </div>
         </div>
         
-        <CountsPie counts={counts} />
+       
 
         </div>
         
@@ -97,12 +98,12 @@ import Axios from 'axios';
 
 
           <div className="conf-box">
-            <p>CONFIDENCE SCORE NEGATIVE: {confidence[0]}</p>
-            <p>CONFIDENCE SCORE NEUTRAL: {confidence[1]}</p>
-            <p>CONFIDENCE SCORE POSITIVE: {confidence[2]}</p>
-
+            <h3>Confidence Scores</h3>
+            <p>NEGATIVE: {confidence[0]}</p>
+            <p>NEUTRAL: {confidence[1]}</p>
+            <p>POSITIVE: {confidence[2]}</p>
           </div>
-           
+           <ConfidenceBar confidence={confidence}/>
 
 
 
